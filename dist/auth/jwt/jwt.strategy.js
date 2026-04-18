@@ -14,18 +14,30 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
 const auth_service_1 = require("../auth.service");
-let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'jwt') {
+const extractBearerToken = (req) => {
+    const authHeader = req.headers?.authorization;
+    if (!authHeader) {
+        return null;
+    }
+    const headerValue = Array.isArray(authHeader) ? authHeader[0] : authHeader;
+    const [scheme, token] = headerValue.split(" ");
+    if (scheme !== "Bearer" || !token) {
+        return null;
+    }
+    return token;
+};
+let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, "jwt") {
     authService;
     constructor(authService) {
         super({
-            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: extractBearerToken,
             ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET || 'super-secret-key-for-dev',
+            secretOrKey: process.env.JWT_SECRET || "super-secret-key-for-dev",
         });
         this.authService = authService;
     }
     async validate(payload) {
-        const user = await this.authService.validateUser(payload);
+        const user = (await this.authService.validateUser(payload));
         if (!user) {
             throw new common_1.UnauthorizedException();
         }

@@ -1,14 +1,14 @@
 import {
-    BadRequestException,
-    Injectable,
-    UnauthorizedException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
-import { TokenPayload } from '../types/token.interface';
-import { UsersService } from '../users/users.service';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import * as bcrypt from "bcryptjs";
+import { TokenPayload } from "../types/token.interface";
+import { UsersService } from "../users/users.service";
+import { LoginDto } from "./dto/login.dto";
+import { RegisterDto } from "./dto/register.dto";
 
 @Injectable()
 export class AuthService {
@@ -44,7 +44,7 @@ export class AuthService {
   async login(dto: LoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (!user || !(await bcrypt.compare(dto.password, user.password))) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     const accessToken = await this.generateAccessToken(user);
@@ -67,12 +67,12 @@ export class AuthService {
   async refresh(refreshToken: string) {
     const userId = await this.usersService.validateRefreshToken(refreshToken);
     if (!userId) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException("Invalid refresh token");
     }
 
     const user = await this.usersService.findById(userId);
     if (!user) {
-      throw new BadRequestException('User not found');
+      throw new BadRequestException("User not found");
     }
 
     const accessToken = await this.generateAccessToken(user);
@@ -88,7 +88,7 @@ export class AuthService {
 
   async logout(refreshToken: string) {
     await this.usersService.invalidateRefreshToken(refreshToken);
-    return { message: 'Logged out successfully' };
+    return { message: "Logged out successfully" };
   }
 
   async validateUser(payload: TokenPayload): Promise<any> {
@@ -105,7 +105,7 @@ export class AuthService {
       email: user.email,
       role: user.role,
     };
-    return this.jwtService.signAsync(payload, { expiresIn: '15m' });
+    return this.jwtService.signAsync(payload, { expiresIn: "15m" });
   }
 
   private async generateRefreshToken(user: any): Promise<string> {
@@ -114,6 +114,6 @@ export class AuthService {
       email: user.email,
       role: user.role,
     };
-    return this.jwtService.signAsync(payload, { expiresIn: '7d' });
+    return this.jwtService.signAsync(payload, { expiresIn: "7d" });
   }
 }

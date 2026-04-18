@@ -46,28 +46,28 @@ const uuid_1 = require("uuid");
 let UsersService = class UsersService {
     users = [
         {
-            id: 'admin-id',
-            email: 'admin@example.com',
-            password: '$2a$10$somehashedadminpass1234567890abcdef',
-            name: 'Admin',
-            role: 'admin',
+            id: "admin-id",
+            email: "admin@example.com",
+            password: "$2a$10$somehashedadminpass1234567890abcdef",
+            name: "Admin",
+            role: "admin",
         },
     ];
     refreshTokens = {};
     async findByEmail(email) {
-        return this.users.find((user) => user.email === email);
+        return await Promise.resolve(this.users.find((user) => user.email === email));
     }
     async findById(id) {
-        return this.users.find((user) => user.id === id);
+        return await Promise.resolve(this.users.find((user) => user.id === id));
     }
     async create(userData) {
         const existing = await this.findByEmail(userData.email);
         if (existing) {
-            throw new common_1.ConflictException('Email already exists');
+            throw new common_1.ConflictException("Email already exists");
         }
         const id = (0, uuid_1.v4)();
         const hashedPassword = await bcrypt.hash(userData.password, 10);
-        const role = userData.role || 'user';
+        const role = userData.role || "user";
         const user = { id, ...userData, password: hashedPassword, role };
         this.users.push(user);
         return user;

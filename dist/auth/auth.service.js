@@ -77,7 +77,7 @@ let AuthService = class AuthService {
     async login(dto) {
         const user = await this.usersService.findByEmail(dto.email);
         if (!user || !(await bcrypt.compare(dto.password, user.password))) {
-            throw new common_1.UnauthorizedException('Invalid credentials');
+            throw new common_1.UnauthorizedException("Invalid credentials");
         }
         const accessToken = await this.generateAccessToken(user);
         const refreshToken = await this.generateRefreshToken(user);
@@ -96,11 +96,11 @@ let AuthService = class AuthService {
     async refresh(refreshToken) {
         const userId = await this.usersService.validateRefreshToken(refreshToken);
         if (!userId) {
-            throw new common_1.UnauthorizedException('Invalid refresh token');
+            throw new common_1.UnauthorizedException("Invalid refresh token");
         }
         const user = await this.usersService.findById(userId);
         if (!user) {
-            throw new common_1.BadRequestException('User not found');
+            throw new common_1.BadRequestException("User not found");
         }
         const accessToken = await this.generateAccessToken(user);
         const newRefreshToken = await this.generateRefreshToken(user);
@@ -112,7 +112,7 @@ let AuthService = class AuthService {
     }
     async logout(refreshToken) {
         await this.usersService.invalidateRefreshToken(refreshToken);
-        return { message: 'Logged out successfully' };
+        return { message: "Logged out successfully" };
     }
     async validateUser(payload) {
         const user = await this.usersService.findById(payload.sub);
@@ -127,7 +127,7 @@ let AuthService = class AuthService {
             email: user.email,
             role: user.role,
         };
-        return this.jwtService.signAsync(payload, { expiresIn: '15m' });
+        return this.jwtService.signAsync(payload, { expiresIn: "15m" });
     }
     async generateRefreshToken(user) {
         const payload = {
@@ -135,7 +135,7 @@ let AuthService = class AuthService {
             email: user.email,
             role: user.role,
         };
-        return this.jwtService.signAsync(payload, { expiresIn: '7d' });
+        return this.jwtService.signAsync(payload, { expiresIn: "7d" });
     }
 };
 exports.AuthService = AuthService;

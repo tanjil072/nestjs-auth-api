@@ -3,5 +3,5 @@ export interface User {
   email: string;
   password: string; // hashed
   name: string;
-  role: 'user' | 'admin';
+  role: "user" | "admin";
 }

@@ -41,42 +41,42 @@ let AuthController = class AuthController {
         return req.user;
     }
     getAdmin(req) {
-        return { message: 'Admin access', user: req.user };
+        return { message: "Admin access", user: req.user };
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Post)('register'),
+    (0, common_1.Post)("register"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [register_dto_1.RegisterDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
 __decorate([
-    (0, common_1.Post)('login'),
+    (0, common_1.Post)("login"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_dto_1.LoginDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.Post)('refresh'),
-    __param(0, (0, common_1.Body)('refresh_token')),
+    (0, common_1.Post)("refresh"),
+    __param(0, (0, common_1.Body)("refresh_token")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "refresh", null);
 __decorate([
-    (0, common_1.Delete)('logout'),
+    (0, common_1.Delete)("logout"),
     (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Body)('refresh_token')),
+    __param(0, (0, common_1.Body)("refresh_token")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
-    (0, common_1.Get)('profile'),
+    (0, common_1.Get)("profile"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -84,15 +84,15 @@ __decorate([
 ], AuthController.prototype, "getProfile", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('admin'),
-    (0, common_1.Get)('admin'),
+    (0, roles_decorator_1.Roles)("admin"),
+    (0, common_1.Get)("admin"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "getAdmin", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
+    (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map
